@@ -1,0 +1,441 @@
+@width: 480px;
+
+@main-color: #51B4E3;
+
+@text-color: #000;
+@icons-color: #fff;
+@bkg-color: #eee;
+@bottombar-bkg: #555;
+
+@list-bottomborder-color: #ddd;
+@text-color: #000;
+@labels-color: #6F6F6F;
+
+@topbar-height: 50px;
+@bottombar-height: 50px;
+
+@tabs-height: @topbar-height;
+@tabs-light-bkg: #A6D6EA;
+
+@icons-text-size: 20px;
+
+@titles-height: 30px;
+@list-padding: 20px;
+@list-item-height: 60px;
+@list-item-lineheight: 20px;
+@list-item-padding: 10px;
+
+@submenu-minwidth: 200px;
+@submenu-bkg: #eee;
+@submenu-shadow: #999;
+@submenu-bordercolor: #ccc;
+@submenu-item-height: 40px;
+@submenu-item-padding: 0 20px;
+
+
+.radius(@radius) {
+	-webkit-border-radius: @radius;
+			border-radius: @radius;
+}
+
+.box-shadow(@x, @y, @h, @color) {
+	-webkit-box-shadow: @x @y @h @color;
+	        box-shadow: @x @y @h @color;
+}
+
+.transition(@pr, @t) {
+	-webkit-transition: @pr @t;
+	-moz-transition: @pr @t;
+	-o-transition: @pr @t;
+	transition: @pr @t;
+}
+
+/*****/
+
+.fixed {
+	position: fixed;
+}
+
+.absolute {
+	position: absolute;
+}
+
+ul, ol,
+.zero {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+.full {
+	width: 100%;
+}
+
+.fixed.full,
+.absolute.full {
+	width: @width;
+}
+
+.top {
+	top: 0;
+}
+
+.bottom {
+	bottom: 0;
+}
+
+.fleft {
+	float: left;
+}
+
+.fright {
+	float: right;
+}
+
+/*****/
+
+body,
+html {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font: 16px Helvetica, sans-serif;
+	color: @main-color;
+	background: url(//ssl.gstatic.com/s2/oz/images/stream/pinstripe.png) repeat;
+}
+
+sub {
+	bottom: -0.45em;
+}
+
+a {
+	text-decoration: none;
+	color: @text-color;
+}
+
+.row {
+	position: relative;
+	margin: auto;
+	width: @width;
+}
+
+.content {
+	z-index: 1;
+	position: fixed;
+	background: @bkg-color;
+	top: @topbar-height;
+	bottom: @bottombar-height;
+	width: @width;
+}
+
+.content.no-bottombar {
+	bottom: 0;
+}
+
+.topbar {
+	z-index: 2;
+	height: @topbar-height;
+	background: @main-color;
+	.box-shadow(0, 2px, 10px, #aaa);
+}
+
+.bottombar {
+	z-index: 2;
+	height: @bottombar-height;
+	background: @bottombar-bkg;
+}
+
+.title {
+	color: @main-color;
+	border-bottom: 2px solid @main-color;
+	height: @titles-height;
+	line-height: @titles-height;
+}
+
+/*****/
+
+.lists {
+	padding: (@list-padding / 2) @list-padding (@list-padding / 2) @list-padding;
+	width: @width - (@list-padding * 2);
+}
+
+.list,
+.list-item,
+.list-item .item {
+	float: left;
+	width: 100%;
+}
+
+.list-item {
+	min-height: @list-item-height;
+}
+
+.list-item .item {
+	display: block;
+	min-height: @list-item-height - (@list-item-padding * 2);
+	line-height: @list-item-lineheight;
+	padding: @list-item-padding 0;
+	border-top: 1px solid @list-bottomborder-color;
+}
+
+.list.single-fill .list-item {
+	height: @list-item-height;
+}
+
+.list.single-fill .list-item .item {
+	padding: 0;
+	height: @list-item-height;
+	line-height: @list-item-height;
+}
+
+.list-item:first-child .item {
+	color: @text-color;
+	border-top: none;
+}
+
+.list-item span.fleft {
+	width: @width - (@list-padding * 2) - @list-item-height;
+}
+
+.list-item span.fright {
+	width: @list-item-height;
+}
+
+.list-item span.fright img {
+	float: right;
+}
+
+.list-item .item .label {
+	display: block;
+	color: #666;
+}
+
+
+/*****/
+
+.tabs > li > a,
+.tabs > li {
+	float: left;
+}
+
+.tabs > li {
+	width: 50%;
+	height: @tabs-height - 5px;
+}
+
+.tabs.three > li {
+	width: 33.33%;
+}
+
+.tabs > li:hover,
+.tabs > li.active {
+	border-bottom: 5px solid @icons-color;
+}
+
+.tabs > li > a {
+	width: 100%;
+	height: @tabs-height - 20%;
+	line-height: @tabs-height - 20%;
+	margin-top: (@tabs-height - (@tabs-height - 20%)) / 2;
+	text-align: center;
+	border-right: 1px solid @tabs-light-bkg;
+}
+
+.tabs > li:last-child > a {
+	border-right: none;
+}
+
+/*****/
+
+.icon > a {
+	color: @icons-color;
+	font-size: @icons-text-size;
+}
+
+.bar .icn,
+.bar .icn > a {
+	display: block;
+	width: @bottombar-height;
+	height: @bottombar-height;
+	line-height: @bottombar-height;
+	text-align: center;
+}
+
+.bar .icn {
+	position: absolute;
+	z-index: 2;
+}
+
+.bar .icn.left {
+	left: 0;
+}
+
+.bar .icn.right {
+	right: 0;
+}
+
+.bar .icn.right.sec {
+	right: 60px;
+}
+
+.bar .icn.center {
+	left: 50%;
+	margin-left: -(@bottombar-height / 2);
+}
+
+.bar .icn.full {
+	z-index: 1;
+	float: left;
+	width: 100%;
+}
+
+.contact-name {
+	color: @icons-color;
+}
+
+.wrap-submenu {
+	position: relative;
+}
+
+/*****/
+
+.submenu {
+	min-width: @submenu-minwidth;
+	background: @submenu-bkg;
+	position: absolute;
+	right: @list-padding / 2;
+	display: none;
+	text-align: left;
+	.box-shadow(0, 2px, 5px, @submenu-shadow);
+}
+
+.wrap-submenu:hover .submenu {
+	display: block;
+}
+
+.submenu li a {
+	height: @submenu-item-height;
+	line-height: @submenu-item-height;
+	padding: @submenu-item-padding;
+	display: block;
+	text-transform: capitalize;
+}
+
+.submenu li {
+	border-bottom: 1px solid @submenu-bordercolor;
+}
+
+.submenu li:last-child a {
+	border-bottom:none;
+}
+
+/*****/
+
+.profile-image {
+	position: relative;
+	overflow: hidden;
+	height: 180px;
+	width: @width;
+	left: -@list-padding;
+	top: -(@list-padding / 2);
+}
+
+.profile-image img {
+	position: absolute;
+	margin-top: -40%;
+	width: 100%;
+}
+
+.profile-image.open {
+	height:auto;
+}
+
+.profile-image.open img {
+	position: static;
+	margin-top: 0;
+}
+
+
+
+
+@media only screen and (max-width: 480px) {
+	.fixed.full,
+	.absolute.full,
+	.row,
+	.content {
+		width: 100%;
+	}
+
+	.profile-image {
+		width: 108%;
+	}
+
+	.lists {
+		padding: 2% 4% 2% 4%;
+		width: 92%;
+	}
+
+	.lists {
+		width: 92%;
+	}
+
+	.list-item span.fleft {
+		width: 80%;
+	}
+
+	.list-item span.fright {
+		width: 20%;
+	}
+
+	.submenu {
+		right: 2%;
+	}
+
+	.profile-image {
+		left: -4%;
+		margin-top: -2%;
+	}
+}
+
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+	.fixed.full,
+	.absolute.full,
+	.row,
+	.content {
+		width: 100%;
+	}
+
+	.profile-image {
+		width: 108%;
+	}
+
+	.lists {
+		padding: 2% 4% 2% 4%;
+		width: 92%;
+	}
+
+	.lists {
+		width: 92%;
+	}
+
+	.list-item span.fleft {
+		width: 80%;
+	}
+
+	.list-item span.fright {
+		width: 20%;
+	}
+
+	.submenu {
+		right: 2%;
+	}
+
+	.profile-image {
+		left: -4%;
+		margin-top: -2%;
+	}
+}
+

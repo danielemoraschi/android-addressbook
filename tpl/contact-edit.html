@@ -1,0 +1,91 @@
+<ul class="fixed top full bar topbar">
+    <li class="icon icn action left">
+        <a href='javascript:void(0)' ng-click="saveContact()"><span class="fontawesome-ok"></span> Done</a>
+    </li>
+</ul>
+
+<div class="content no-bottombar" id="wrapper">
+    <div class="lists fleft" id="scroller">
+
+        <form name="contactForm">
+            <img width="200" height="200" src="imgs/{{ contact.picture }}" onerror="this.src='imgs/NoPicture.gif'"/>
+
+            <div class="field-group">
+                <label>Picture:</label>
+                <input type="text" name="picture" ng-model="contact.picture"/>
+            </div>
+
+            <div class="field-group">
+                <div ng-class="{error: contactForm.firstName.$invalid}">
+                    <label>First Name:</label>
+                    <input type="text" name="firstName" ng-model="contact.firstName" required/>
+                    <span ng-show="contactForm.firstName.$error.required">Required</span>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label>Last Name:</label>
+                <input type="text" name="lastName" ng-model="contact.lastName"/>
+            </div>
+
+            <div class="field-group">
+                <label>Birthday:</label>
+                <input type="date" name="birthday" ng-model="contact.birthday"/>
+            </div>
+
+            <div class="field-group">
+                <div ng-repeat="phone in contact.phones">
+                    <label>Type:</label>
+                    <input type="text" name="phone[{{ $index }}][type]" ng-model="phone.type"/>
+                    <label>Value:</label>
+                    <input type="text" name="phone[{{ $index }}][value]" ng-model="phone.value"/>
+                    <button class="delete" ng-click="discard('phones', $index)">Delete</button>
+                </div>
+                <button class="save" ng-click="addNew('phones')">Add new</button>
+            </div>
+
+            <div class="field-group">
+                <div ng-repeat="email in contact.emails">
+                    <label>Type:</label>
+                    <input type="text" name="email[{{ $index }}][type]" ng-model="email.type"/>
+                    <label>Value:</label>
+                    <input type="text" name="email[{{ $index }}][value]" ng-model="email.value"/>
+                    <button class="delete" ng-click="discard('emails', $index)">Delete</button>
+                </div>
+                <button class="save" ng-click="addNew('emails')">Add new</button>
+            </div>
+
+            <div class="field-group">
+                <div ng-repeat="address in contact.addresses">
+                    <label>Type:</label>
+                    <input type="text" name="address[{{ $index }}][type]" ng-model="address.type"/>
+                    <label>Value:</label>
+                    <textarea name="address[{{ $index }}][value]" ng-model="address.value"></textarea>
+                    <button class="delete" ng-click="discard('addresses', $index)">Delete</button>
+                </div>
+                <button class="save" ng-click="addNew('addresses')">Add new</button>
+            </div>
+
+            <div class="field-group">
+                <div ng-repeat="website in contact.websites">
+                    <label>Type:</label>
+                    <input type="text" name="website[{{ $index }}][type]" ng-model="website.type"/>
+                    <label>Value:</label>
+                    <input type="url" name="website[{{ $index }}][value]" ng-model="website.value"/>
+                    <button class="delete" ng-click="discard('websites', $index)">Delete</button>
+                </div>
+                <button class="save" ng-click="addNew('websites')">Add new</button>
+            </div>
+
+            <div class="field-group">
+                <label>Notes:</label>
+                <textarea name="notes" ng-model="contact.notes"></textarea>
+            </div>
+
+            <div class="field-group actions">
+                <button class="save" ng-click="saveContact()" ng-disabled="isClean() || contactForm.$invalid">Save</button>
+            </div>
+        </form>
+
+    </div>
+</div>

@@ -1,0 +1,33 @@
+<ul class="fixed top full bar topbar tabs two">
+    <li class="icon active">
+        <a href='#/contacts'><span class="fontawesome-user"></span></a>
+    </li>
+    <li class="icon">
+        <a href='#/contacts/starred'><span class="fontawesome-star"></span></a>
+    </li>
+</ul>
+
+<div class="content" id="wrapper">
+	<div class="lists" id="scroller">
+		<div ng:repeat="group in groups">
+			<div class="title fleft full">{{ group.label }}</div>
+			<ul class="list single-fill">
+			    <li class="list-item" ng:repeat="contact in group.contacts">
+			        <a class="item" href='#/contact/view/{{ contact._id.$oid }}'>
+			        	<span class="fleft name">{{ contact.firstName + ' ' + contact.lastName }}</span>
+			        	<span class="fright image"><img width="60" height="60" src="imgs/{{ contact.picture }}" onerror="this.src='imgs/NoPicture.gif'"/></span>
+			       	</a>
+			    </li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<ul class="fixed bottom full bar bottombar">
+	<li class="icon icn left">
+        <a href='#/contact/add'><span class="fontawesome-search"></span></a>
+    </li>
+    <li class="icon icn center">
+        <a href='#/contact/add'><span class="fontawesome-user"></span><sub class="fontawesome-plus"></sub></a>
+    </li>
+</ul>

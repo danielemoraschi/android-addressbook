@@ -1,0 +1,88 @@
+<ul class="fixed top full bar topbar">
+    <li class="icon icn left">
+        <a href='#/contacts'><span class="fontawesome-chevron-left"></span></a>
+    </li>
+    <li class="contact-name icn full">{{ contact.firstName + ' ' + contact.lastName }}</li>
+    <li class="icon icn right sec">
+        <a href='javascript:void(0)'><span ng-click="starred()" ng-class="{'fontawesome-star': contact.starred, 'fontawesome-star-empty': !contact.starred}"></span></a>
+    </li>
+    <li class="wrap-submenu icon icn right">
+        <a href='javascript:void(0)'><span class="fontawesome-pencil"></span></a>
+        <ul class="submenu">
+            <li>
+                <a href='#/contact/edit/{{ contact._id.$oid }}'>edit</a>
+            </li>
+            <li>
+                <a href='javascript:void(0)' ng-click="deleteContact()">delete</a>
+            </li>
+        </ul>
+    </li>
+</ul>
+
+<div class="content no-bottombar" id="wrapper">
+    <div class="lists fleft" id="scroller">
+
+        <div class="profile-image" ng-click="showImage()" ng-class="{open: selected}">
+            <img src="imgs/{{ contact.picture }}" onerror="this.src='imgs/NoPicture.gif'"/>
+        </div>
+
+        <div class="title fleft full">Phone</div>
+        <ul class="list">
+            <li class="list-item" ng:repeat="item in contact.phones">
+                <a class="item" href="tel:{{ item.value }}">
+                    <span class="value">{{ item.value }}</span>
+                    <span class="label">{{ item.type }}</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="title fleft full">Email</div>
+        <ul class="list">
+            <li class="list-item" ng:repeat="item in contact.emails">
+                <a class="item" target="_black" href="mailto:{{ item.value }}">
+                    <span class="value">{{ item.value }}</span>
+                    <span class="label">{{ item.type }}</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="title fleft full">Address</div>
+        <ul class="list">
+            <li class="list-item" ng:repeat="item in contact.addresses">
+                <a class="item" target="_black" href="https://maps.google.com/maps?q={{ item.value }}">
+                    <span class="value">{{ item.value }}</span>
+                    <span class="label">{{ item.type }}</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="title fleft full">Birthday</div>
+        <ul class="list">
+            <li class="list-item">
+                <span class="item">
+                    <span class="value">{{ contact.birthday }}</span>
+                </span>
+            </li>
+        </ul>
+
+        <div class="title fleft full">Websites</div>
+        <ul class="list">
+            <li class="list-item" ng:repeat="item in contact.websites">
+                <a class="item" target="_black" href="{{ item.value }}">
+                    <span class="value">{{ item.value }}</span>
+                    <span class="label">{{ item.type }}</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="title fleft full">Notes</div>
+        <ul class="list">
+            <li class="list-item">
+                <span class="item">
+                    <span class="value">{{ contact.notes }}</span>
+                </span>
+            </li>
+        </ul>
+
+    </div>
+</div>
