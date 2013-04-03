@@ -58,17 +58,44 @@ app.factory('utils', function() {
 var _scroll;
 
 function CreateCtrl($scope, $location, Contacts) {
-	$scope.save = function() {
-		$location.path('/contact/view/' + $scope.contact._id.$oid);
-		/*Contacts.save($scope.contact, function(contact) {
+	$scope.contact = {
+		starred: false,
+		firstName: "",
+		lastName: "",
+		birthday: "",
+		picture: "",
+		phones: [],
+		emails: [],
+		addresses: [],
+		websites: [],
+		notes: ""
+	};
+
+	$scope.saveContact = function() {
+		Contacts.save($scope.contact, function(contact) {
 			$location.path('/contact/edit/' + contact._id.$oid);
-		});*/
+		});
 	}
+
+    $scope.addNew = function(type) {
+    	$scope.contact[type] || ($scope.contact[type] = []);
+    	$scope.contact[type].push({
+    		type: '',
+    		value: ''
+    	});
+    }
+
+    $scope.discard = function(type, index) {
+    	if($scope.contact[type] && $scope.contact[type][index]) {
+    		$scope.contact[type].splice(index,1);
+    	}
+    }
 }
 
 function DetailCtrl($scope, $location, $routeParams, utils, Contacts) {
 	var self = this;
 	$scope.selected = false;
+	$scope.submenu = false;
 
 	Contacts.get({id: $routeParams.id}, function(contact) {
 		self.original = contact;
@@ -78,8 +105,12 @@ function DetailCtrl($scope, $location, $routeParams, utils, Contacts) {
 		setTimeout(function () { _scroll.refresh(); }, 0);
 	});
 
-	$scope.showImage = function() {
+	$scope._showImage = function() {
 		$scope.selected = !$scope.selected;
+	}
+
+	$scope._submenu = function() {
+		$scope.submenu = !$scope.submenu;
 	}
 
 	$scope.saveContact = function (contact) {
@@ -98,9 +129,9 @@ function DetailCtrl($scope, $location, $routeParams, utils, Contacts) {
     }
 
     $scope.deleteContact = function () {
-		/*self.original.delete(function() {
+		self.original.delete(function() {
 			$location.path('/contacts');
-    	});*/
+    	});
     }
 
     $scope.addNew = function(type) {
@@ -112,10 +143,8 @@ function DetailCtrl($scope, $location, $routeParams, utils, Contacts) {
     }
 
     $scope.discard = function(type, index) {
-    	log(index);
     	if($scope.contact[type] && $scope.contact[type][index]) {
     		$scope.contact[type].splice(index,1);
-
     	}
     }
 }

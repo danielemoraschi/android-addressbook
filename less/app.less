@@ -1,6 +1,10 @@
 @width: 480px;
 
+@base-fontsize: 16px;
+@icons-fontsize: 20px;
+
 @main-color: #51B4E3;
+@light-color: #A6D6EA;
 
 @text-color: #000;
 @icons-color: #fff;
@@ -15,15 +19,14 @@
 @bottombar-height: 50px;
 
 @tabs-height: @topbar-height;
-@tabs-light-bkg: #A6D6EA;
-
-@icons-text-size: 20px;
 
 @titles-height: 30px;
 @list-padding: 20px;
 @list-item-height: 60px;
 @list-item-lineheight: 20px;
 @list-item-padding: 10px;
+
+@in-width: @width - (@list-padding * 2);
 
 @submenu-minwidth: 200px;
 @submenu-bkg: #eee;
@@ -35,12 +38,16 @@
 
 .radius(@radius) {
 	-webkit-border-radius: @radius;
-			border-radius: @radius;
+	-moz-border-radius: @radius;
+	-o-border-radius: @radius;
+	border-radius: @radius;
 }
 
 .box-shadow(@x, @y, @h, @color) {
 	-webkit-box-shadow: @x @y @h @color;
-	        box-shadow: @x @y @h @color;
+	-moz-box-shadow: @x @y @h @color;
+	-o-box-shadow: @x @y @h @color;
+	box-shadow: @x @y @h @color;
 }
 
 .transition(@pr, @t) {
@@ -102,7 +109,7 @@ html {
 body {
 	margin: 0;
 	padding: 0;
-	font: 16px Helvetica, sans-serif;
+	font: @base-fontsize Helvetica, sans-serif;
 	color: @main-color;
 	background: url(//ssl.gstatic.com/s2/oz/images/stream/pinstripe.png) repeat;
 }
@@ -139,7 +146,7 @@ a {
 	z-index: 2;
 	height: @topbar-height;
 	background: @main-color;
-	.box-shadow(0, 2px, 10px, #aaa);
+	.box-shadow(0, 2px, 10px, #888);
 }
 
 .bottombar {
@@ -159,7 +166,7 @@ a {
 
 .lists {
 	padding: (@list-padding / 2) @list-padding (@list-padding / 2) @list-padding;
-	width: @width - (@list-padding * 2);
+	width: @in-width;
 }
 
 .list,
@@ -169,20 +176,15 @@ a {
 	width: 100%;
 }
 
-.list-item {
-	min-height: @list-item-height;
-}
-
 .list-item .item {
 	display: block;
-	min-height: @list-item-height - (@list-item-padding * 2);
 	line-height: @list-item-lineheight;
 	padding: @list-item-padding 0;
 	border-top: 1px solid @list-bottomborder-color;
 }
 
 .list.single-fill .list-item {
-	height: @list-item-height;
+	/*height: @list-item-height;*/
 }
 
 .list.single-fill .list-item .item {
@@ -197,7 +199,7 @@ a {
 }
 
 .list-item span.fleft {
-	width: @width - (@list-padding * 2) - @list-item-height;
+	width: @in-width - @list-item-height;
 }
 
 .list-item span.fright {
@@ -210,6 +212,8 @@ a {
 
 .list-item .item .label {
 	display: block;
+	text-transform: uppercase;
+	font-size: @base-fontsize - 2%;
 	color: #666;
 }
 
@@ -241,7 +245,7 @@ a {
 	line-height: @tabs-height - 20%;
 	margin-top: (@tabs-height - (@tabs-height - 20%)) / 2;
 	text-align: center;
-	border-right: 1px solid @tabs-light-bkg;
+	border-right: 1px solid @light-color;
 }
 
 .tabs > li:last-child > a {
@@ -252,7 +256,7 @@ a {
 
 .icon > a {
 	color: @icons-color;
-	font-size: @icons-text-size;
+	font-size: @icons-fontsize;
 }
 
 .bar .icn,
@@ -289,30 +293,51 @@ a {
 .bar .icn.full {
 	z-index: 1;
 	float: left;
+	padding-left: 60px;
+	width: auto;
+}
+
+.bar .icn.full.centred {
+	padding-left: 0;
+	float: none;
 	width: 100%;
+}
+
+.bar .icn.action,
+.bar .icn.action a {
+	width: auto;
+	font-size: @base-fontsize;
+}
+
+.bar .icn.action a span {
+	font-size: @base-fontsize + 6%;
+}
+
+.bar .icn.action a {
+	padding: 0 10px;
+}
+
+.bar .icn.action a span{
+	padding-right: 10px;
 }
 
 .contact-name {
 	color: @icons-color;
 }
 
-.wrap-submenu {
-	position: relative;
-}
-
 /*****/
 
 .submenu {
+	display: none;
+	position: absolute;
+	text-align: left;
 	min-width: @submenu-minwidth;
 	background: @submenu-bkg;
-	position: absolute;
 	right: @list-padding / 2;
-	display: none;
-	text-align: left;
 	.box-shadow(0, 2px, 5px, @submenu-shadow);
 }
 
-.wrap-submenu:hover .submenu {
+.show-submenu .submenu {
 	display: block;
 }
 
@@ -357,6 +382,116 @@ a {
 	position: static;
 	margin-top: 0;
 }
+
+/******/
+
+.form .title {
+	padding-left: 10px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;  
+}
+
+.form .list-item:last-child {
+	margin-bottom: 20px;
+}
+
+.form .form-item {
+	position: relative;
+	height: auto;
+	min-height: auto;
+	border-top: none;
+	width: 100%;
+	padding: 10px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;  
+
+}
+
+.form .list-item button {
+	border: none;
+	background: none;
+	margin: 0;
+	text-transform: uppercase;
+	font-size: @base-fontsize - 2%;
+	color: #666;
+}
+
+.form .list-item.action button {
+	padding: 5px 10px 0;
+	margin: 10px 0 0;
+}
+
+.form .form-item.action {
+	text-align: center;
+}
+
+.form .form-item.action button {
+	font-size: @base-fontsize + 10%;
+}
+
+.form .form-item input,
+.form .form-item textarea {
+	width: 100%;
+	border: none;
+	background: none;
+	margin: 0;
+	padding: 7px 0 3px;
+}
+
+.form .form-item .form-item-decorator {
+	width: 100%;
+	height: 5px;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	border-bottom: 1px solid @list-bottomborder-color;
+	border-left: 1px solid @list-bottomborder-color;
+	border-right: 1px solid @list-bottomborder-color;
+}
+
+.form .form-item input:focus,
+.form .form-item textarea:focus {
+	outline: none
+}
+
+form .form-item input:focus + .form-item-decorator,
+form .form-item textarea:focus + .form-item-decorator {
+	border-color: @main-color;
+}
+
+form .form-item input.ng-invalid + .form-item-decorator {
+	border-color: red;
+}
+
+.form .form-item.field-left {
+	width: 70%;
+}
+
+.form .form-item.field-right {
+	width: 20%;
+}
+
+.form .form-item.field-right-right {
+	width: 10%;
+}
+
+.form .form-item.field-left.img {
+	width: 80%;
+}
+
+.form .form-item.field-right.img {
+	width: 20%;
+	padding: 10px 0;
+}
+
+.form .form-item.field-right img {
+	float: right;
+}
+
+
+
 
 
 

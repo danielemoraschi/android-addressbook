@@ -1,9 +1,9 @@
 <ul class="fixed top full bar topbar tabs two">
     <li class="icon active">
-        <a href='#/contacts'><span class="fontawesome-user"></span></a>
+        <a href='#/contacts'><span class="entypo-user"></span></a>
     </li>
     <li class="icon">
-        <a href='#/contacts/starred'><span class="fontawesome-star"></span></a>
+        <a href='#/contacts/starred'><span class="entypo-star"></span></a>
     </li>
 </ul>
 
@@ -15,7 +15,7 @@
 			    <li class="list-item" ng:repeat="contact in group.contacts">
 			        <a class="item" href='#/contact/view/{{ contact._id.$oid }}'>
 			        	<span class="fleft name">{{ contact.firstName + ' ' + contact.lastName }}</span>
-			        	<span class="fright image"><img width="60" height="60" src="imgs/{{ contact.picture }}" onerror="this.src='imgs/NoPicture.gif'"/></span>
+			        	<span class="fright image"><img width="60" height="60" src="{{ contact.picture }}" onerror="this.src='imgs/ic_contact_picture_60.png'"/></span>
 			       	</a>
 			    </li>
 			</ul>
@@ -25,9 +25,9 @@
 
 <ul class="fixed bottom full bar bottombar">
 	<li class="icon icn left">
-        <a href='#/contact/add'><span class="fontawesome-search"></span></a>
+        <a href='#/contact/add'><span class="entypo-search"></span></a>
     </li>
     <li class="icon icn center">
-        <a href='#/contact/add'><span class="fontawesome-user"></span><sub class="fontawesome-plus"></sub></a>
+        <a href='#/contact/add'><span class="entypo-user-add"></span></a>
     </li>
 </ul>
