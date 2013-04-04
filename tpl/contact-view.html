@@ -2,9 +2,9 @@
     <li class="icon icn left">
         <a href='#/contacts'><span class="entypo-left-open-big"></span></a>
     </li>
-    <li class="contact-name icn full">{{ contact.firstName + ' ' + contact.lastName }}</li>
+    <li class="contact-name icn full" ng-bind="FullName()"></li>
     <li class="icon icn right sec">
-        <a href='javascript:void(0)'><span ng-click="starred()" ng-class="{'entypo-star': contact.starred, 'entypo-star-empty': !contact.starred}"></span></a>
+        <a href='javascript:void(0)'><span ng-click="StarUnStar()" ng-class="{'entypo-star': contact.starred, 'entypo-star-empty': !contact.starred}"></span></a>
     </li>
     <li class="icon icn right" ng-click="_submenu()" ng-class="{'show-submenu': submenu}">
         <a href='javascript:void(0)'><span class="entypo-pencil"></span></a>
@@ -13,7 +13,7 @@
                 <a href='#/contact/edit/{{ contact._id.$oid }}'>edit</a>
             </li>
             <li>
-                <a href='javascript:void(0)' ng-click="deleteContact()">delete</a>
+                <a href='javascript:void(0)' ng-click="DeleteContact()">delete</a>
             </li>
         </ul>
     </li>
@@ -23,7 +23,7 @@
     <div class="lists fleft" id="scroller">
 
         <div class="profile-image" ng-click="_showImage()" ng-class="{open: selected}">
-            <img src="{{ contact.picture }}" onerror="this.src='imgs/ic_contact_picture_360.png'"/>
+            <img ng-src="{{ ProfileImage(360) }}"/>
         </div>
 
         <div class="title fleft full">Phone</div>

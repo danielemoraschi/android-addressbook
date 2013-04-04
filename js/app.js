@@ -6,6 +6,146 @@ window.log = function(){
 	}
 };
 
+
+
+var AddressBook = (function() {
+
+	var iscroll,
+
+	_init = function($scope) {
+		iscroll = null;
+	},
+
+	_iScroll = function() {
+		iscroll && iscroll.destroy();
+		iscroll = new iScroll('wrapper', { hScroll: false });
+		setTimeout(function() { 
+			iscroll.refresh(); 
+		}, 0);
+	},
+
+	_detail_ctrl = function($scope, $location, $routeParams, utils, Contacts) {
+		var self = this;
+		$scope.selected = false;
+		$scope.submenu = false;
+		$scope.contact = {
+			starred: false,
+			firstName: "",
+			lastName: "",
+			birthday: "",
+			picture: "",
+			phones: [],
+			emails: [],
+			addresses: [],
+			websites: [],
+			notes: ""
+		};
+
+		$scope._showImage = function() {
+			$scope.selected = !$scope.selected;
+		}
+		
+		$scope._submenu = function() {
+			$scope.submenu = !$scope.submenu;
+		}
+
+		$scope._isClean = function() {
+			return angular.equals(self.original, $scope.contact);
+		}
+
+		$scope.ProfileImage = function(dim) {
+			return ($scope.contact && $scope.contact.picture) || "imgs/ic_contact_picture_"+dim+".png";
+		}
+
+		$scope.FullName = function(dim) {
+			return ($scope.contact.firstName.trim()) 
+				? $scope.contact.firstName + ' ' + $scope.contact.lastName 
+				: ($scope.contact._id ? 'No name' : 'New contact');
+		}
+
+		$scope.StarUnStar = function () {
+			$scope.contact.starred = !$scope.contact.starred;
+			$scope.contact.update();
+	    }
+
+		$scope.SaveContact = function () {
+	        if($scope.contact.firstName.trim()) {
+	        	if($scope.contact._id.$oid) {
+	    			$scope.contact.update(function() {
+						$location.path('/contact/view/' + $scope.contact._id.$oid);
+					});
+	        	}
+	        	else {
+					Contacts.save($scope.contact, function(contact) {
+						$location.path('/contact/edit/' + contact._id.$oid);
+					});
+				}
+	        }
+	    }
+
+	    $scope.DeleteContact = function () {
+	    	if($scope.contact._id.$oid) {
+				self.original.delete(function() {
+					$location.path('/contacts');
+		    	});
+			}
+	    }
+
+		if($routeParams.id) {
+			Contacts.get({id: $routeParams.id}, function(contact) {
+				self.original = contact;
+				if(!self.original.views) {
+					self.original.views = 0;
+				}
+				self.original.views++;
+			    $scope.contact = new Contacts(self.original);
+				$scope.contact.update();
+				_iScroll();
+			});
+		} else {
+			_iScroll();
+		}
+	},
+
+	_list_ctrl = function($scope, $location, $routeParams, utils, Contacts) {
+		var i, 
+			ch, 
+			q = {},
+			self = this;
+
+		$scope.orderProp = 'firstName';
+	  	$scope.groups = {};
+	  	$scope.contacts = {};
+
+		$scope.ProfileImage = function(dim, contact) {
+			return contact.picture || "imgs/ic_contact_picture_"+dim+".png";
+		}
+
+		if($location.$$url == "/contacts/starred") {
+			q = {q: '{"starred":true}'};
+		}
+
+		$scope.contacts = Contacts.query(q, function() {
+			utils.groupify($scope.contacts, $scope.groups);
+		    _iScroll();
+		});
+	};
+
+
+	return {
+		Init: _init,
+		DetailCtrl: _detail_ctrl,
+		ListCtrl: _list_ctrl
+	}
+
+})();
+
+
+
+
+
+
+
 angular.module('mongolab', ['ngResource']).
     factory('Contacts', function($resource) {
 		var Contacts = $resource('https://api.mongolab.com/api/1/databases/addressbook/collections/contacts/:id',
@@ -30,11 +170,12 @@ angular.module('mongolab', ['ngResource']).
 var app = angular.module('addressbook', ['mongolab']).
 	config(['$routeProvider', function($routeProvider, $locationProvider) {
 	  	$routeProvider.
-			when('/contacts', {templateUrl: 'tpl/contacts-list.html', controller: AddressBookCtrl}).
-			when('/contacts/starred', {templateUrl: 'tpl/contacts-list.html', controller: StarredCtrl}).
-			when('/contact/add', {templateUrl: 'tpl/contact-edit.html', controller: CreateCtrl}).
-			when('/contact/view/:id', {templateUrl: 'tpl/contact-view.html', controller: DetailCtrl}).
-			when('/contact/edit/:id', {templateUrl: 'tpl/contact-edit.html', controller: DetailCtrl}).
+			when('/contacts/', {templateUrl: 'tpl/contacts-list.html', controller: AddressBook.ListCtrl}).
+			when('/contacts/starred', {templateUrl: 'tpl/contacts-list.html', controller: AddressBook.ListCtrl}).
+			when('/contact/add', {templateUrl: 'tpl/contact-edit.html', controller: AddressBook.DetailCtrl}).
+			when('/contact/view/:id', {templateUrl: 'tpl/contact-view.html', controller: AddressBook.DetailCtrl}).
+			when('/contact/edit/:id', {templateUrl: 'tpl/contact-edit.html', controller: AddressBook.DetailCtrl}).
+
 			otherwise({redirectTo: '/contacts'});
 }]);
 
@@ -53,125 +194,5 @@ app.factory('utils', function() {
 		}
 	}
 });
-
-
-var _scroll;
-
-function CreateCtrl($scope, $location, Contacts) {
-	$scope.contact = {
-		starred: false,
-		firstName: "",
-		lastName: "",
-		birthday: "",
-		picture: "",
-		phones: [],
-		emails: [],
-		addresses: [],
-		websites: [],
-		notes: ""
-	};
-
-	$scope.saveContact = function() {
-		Contacts.save($scope.contact, function(contact) {
-			$location.path('/contact/edit/' + contact._id.$oid);
-		});
-	}
-
-    $scope.addNew = function(type) {
-    	$scope.contact[type] || ($scope.contact[type] = []);
-    	$scope.contact[type].push({
-    		type: '',
-    		value: ''
-    	});
-    }
-
-    $scope.discard = function(type, index) {
-    	if($scope.contact[type] && $scope.contact[type][index]) {
-    		$scope.contact[type].splice(index,1);
-    	}
-    }
-}
-
-function DetailCtrl($scope, $location, $routeParams, utils, Contacts) {
-	var self = this;
-	$scope.selected = false;
-	$scope.submenu = false;
-
-	Contacts.get({id: $routeParams.id}, function(contact) {
-		self.original = contact;
-	    $scope.contact = new Contacts(self.original);
-
-	    _scroll = new iScroll('wrapper', {hScroll: false});
-		setTimeout(function () { _scroll.refresh(); }, 0);
-	});
-
-	$scope._showImage = function() {
-		$scope.selected = !$scope.selected;
-	}
-
-	$scope._submenu = function() {
-		$scope.submenu = !$scope.submenu;
-	}
-
-	$scope.saveContact = function (contact) {
-        $scope.contact.update(function() {
-			$location.path('/contact/view/' + $scope.contact._id.$oid);
-		});
-    }
-
-    $scope.isClean = function() {
-		return angular.equals(self.original, $scope.contact);
-	}
-
-	$scope.starred = function () {
-		$scope.contact.starred = !$scope.contact.starred;
-		$scope.contact.update();
-    }
-
-    $scope.deleteContact = function () {
-		self.original.delete(function() {
-			$location.path('/contacts');
-    	});
-    }
-
-    $scope.addNew = function(type) {
-    	$scope.contact[type] || ($scope.contact[type] = []);
-    	$scope.contact[type].push({
-    		type: '',
-    		value: ''
-    	});
-    }
-
-    $scope.discard = function(type, index) {
-    	if($scope.contact[type] && $scope.contact[type][index]) {
-    		$scope.contact[type].splice(index,1);
-    	}
-    }
-}
-
-function StarredCtrl($scope, utils, Contacts) {
-	var i, ch;
-	$scope.orderProp = 'firstName';
-  	$scope.groups = {};
-	$scope.contacts = Contacts.query({q: '{"starred":true}'}, function() {
-	  	utils.groupify($scope.contacts, $scope.groups);
-	    _scroll = new iScroll('wrapper', {hScroll: false});
-		setTimeout(function () { _scroll.refresh(); }, 0);
-	});
-}
-
-function AddressBookCtrl($scope, utils, Contacts) {
-	var i, ch;
-	$scope.orderProp = 'firstName';
-  	$scope.groups = {};
-	$scope.contacts = Contacts.query(function() {
-		utils.groupify($scope.contacts, $scope.groups);
-	    _scroll = new iScroll('wrapper', {hScroll: false});
-		setTimeout(function () { _scroll.refresh(); }, 0);
-	});
-}
-
-
-
 
 

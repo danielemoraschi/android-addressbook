@@ -1,16 +1,18 @@
 <ul class="fixed top full bar topbar">
     <li class="icon icn left">
-        <a href='javascript:void(0)' ng-click="saveContact()"><span class="entypo-check"></span></a>
+        <a href='javascript:void(0)' ng-click="SaveContact()"><span ng-class="{'entypo-dot': contactForm.name.$invalid, 'entypo-check': !contactForm.name.$invalid}"></span></a>
     </li>
-    <li class="contact-name icn full ">{{ contact.firstName + ' ' + contact.lastName }}</li>
-    <li class="icon icn right">
-        <a href='#/contact/view/{{ contact._id.$oid }}'><span class="entypo-cancel"></span></a>
+    <li class="contact-name icn full" ng-bind="FullName()"></li>
+    <li class="icon icn right" ng-show="contact._id.$oid">
+        <a ng-href="#/contact/view/{{ contact._id.$oid }}"><span class="entypo-cancel"></span></a>
+    </li>
+    <li class="icon icn right" ng-show="!contact._id.$oid">
+        <a ng-href="#/contacts"><span class="entypo-cancel"></span></a>
     </li>
 </ul>
 
 <div class="content no-bottombar" id="wrapper">
     <div class="lists fleft" id="scroller">
-
 
         <form class="form" name="contactForm">
 
@@ -18,7 +20,7 @@
             <ul class="list">
                 <li class="list-item">
                     <div class="item form-item">
-                        <input type="text" ng-model="contact.firstName" required/>
+                        <input type="text" name="name" ng-model="contact.firstName" required/>
                         <span class="form-item-decorator"></span>
                     </div>
                 </li>
@@ -38,7 +40,7 @@
                         <span class="form-item-decorator"></span>
                     </div>
                     <div class="item form-item field-right img">
-                        <img width="60" height="60" src="{{ contact.picture }}" onerror="this.src='imgs/ic_contact_picture_60.png'"/>
+                        <img width="60" height="60" ng-src="{{ ProfileImage(60) }}"/>
                     </div>
                 </li>
             </ul>
@@ -55,11 +57,11 @@
                         <span class="form-item-decorator"></span>
                     </div>
                     <div class="item form-item field-right-right action">
-                        <button class="delete" ng-click="discard('phones', $index)"><span class="entypo-cancel"></span></button>
+                        <button class="delete" ng-click="DiscardField('phones', $index)"><span class="entypo-cancel"></span></button>
                     </div>
                 </li>
                 <li class="list-item action">
-                    <button class="save" ng-click="addNew('phones')">Add new</button>
+                    <button class="save" ng-click="AddField('phones')">Add new</button>
                 </li>
             </ul>
 
@@ -75,11 +77,11 @@
                         <span class="form-item-decorator"></span>
                     </div>
                     <div class="item form-item field-right-right action">
-                        <button class="delete" ng-click="discard('emails', $index)"><span class="entypo-cancel"></span></button>
+                        <button class="delete" ng-click="DiscardField('emails', $index)"><span class="entypo-cancel"></span></button>
                     </div>
                 </li>
                 <li class="list-item action">
-                    <button class="save" ng-click="addNew('emails')">Add new</button>
+                    <button class="save" ng-click="AddField('emails')">Add new</button>
                 </li>
             </ul>
 
@@ -95,11 +97,11 @@
                         <span class="form-item-decorator"></span>
                     </div>
                     <div class="item form-item field-right-right action">
-                        <button class="delete" ng-click="discard('addresses', $index)"><span class="entypo-cancel"></span></button>
+                        <button class="delete" ng-click="DiscardField('addresses', $index)"><span class="entypo-cancel"></span></button>
                     </div>
                 </li>
                 <li class="list-item action">
-                    <button class="save" ng-click="addNew('addresses')">Add new</button>
+                    <button class="save" ng-click="AddField('addresses')">Add new</button>
                 </li>
             </ul>
 
@@ -125,11 +127,11 @@
                         <span class="form-item-decorator"></span>
                     </div>
                     <div class="item form-item field-right-right action">
-                        <button class="delete" ng-click="discard('websites', $index)"><span class="entypo-cancel"></span></button>
+                        <button class="delete" ng-click="DiscardField('websites', $index)"><span class="entypo-cancel"></span></button>
                     </div>
                 </li>
                 <li class="list-item action">
-                    <button class="save" ng-click="addNew('websites')">Add new</button>
+                    <button class="save" ng-click="AddField('websites')">Add new</button>
                 </li>
             </ul>
 
