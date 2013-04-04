@@ -2,7 +2,7 @@
 
 angular.module('mongolab', ['ngResource']).
     factory('Contacts', function($resource) {
-		var Contacts = $resource('https://api.mongolab.com/api/1/databases/addressbook/collections/contacts2/:id',
+		var Contacts = $resource('https://api.mongolab.com/api/1/databases/addressbook/collections/contacts/:id',
 			{ apiKey: 'RO27EEbdFsJfycTn_JUiAnr3qIcsgyxS' }, {
 				update: { method: 'PUT' }
 			}
