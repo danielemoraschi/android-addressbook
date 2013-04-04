@@ -10,10 +10,13 @@ window.log = function(){
 
 var AddressBook = (function() {
 
-	var iscroll,
+	var 
+	iscroll,
+	last_view,
 
 	_init = function($scope) {
 		iscroll = null;
+		last_view = '/contacts';
 	},
 
 	_iScroll = function() {
@@ -51,6 +54,10 @@ var AddressBook = (function() {
 
 		$scope._isClean = function() {
 			return angular.equals(self.original, $scope.contact);
+		}
+
+		$scope.Back = function() {
+			$location.path(last_view);
 		}
 
 		$scope.ProfileImage = function(dim) {
@@ -110,25 +117,51 @@ var AddressBook = (function() {
 	_list_ctrl = function($scope, $location, $routeParams, utils, Contacts) {
 		var i, 
 			ch, 
-			q = {},
 			self = this;
 
 		$scope.orderProp = 'firstName';
 	  	$scope.groups = {};
 	  	$scope.contacts = {};
+	  	$scope.starred = {};
+	  	$scope.searchterm = '';
 
 		$scope.ProfileImage = function(dim, contact) {
 			return contact.picture || "imgs/ic_contact_picture_"+dim+".png";
 		}
 
-		if($location.$$url == "/contacts/starred") {
-			q = {q: '{"starred":true}'};
+		$scope.Back = function() {
+			$location.path(last_view);
 		}
 
-		$scope.contacts = Contacts.query(q, function() {
-			utils.groupify($scope.contacts, $scope.groups);
-		    _iScroll();
-		});
+		switch($location.$$url) {
+			case "/contacts/starred": 
+				last_view = $location.$$url;
+				$scope.starred = Contacts.query({q: '{"starred":true}'}, function() {
+					$scope.contacts = Contacts.query({q: '{"views":{"$gt":0}}', l: 10}, function() {
+					    _iScroll();
+					});
+				});
+				break;
+
+			case "/contacts/search": 
+	  			//var q = '{"$or":[{"firstName":{"$regex": "'+$scope.searchterm+'","$options": "i"}},{"lastName": {"$regex": "'+$scope.searchterm+'","$options": "i"}}]}';
+				$scope.contacts = Contacts.query(function() {
+					$scope.groups = [{
+						label: 'All contacts',
+						contacts: $scope.contacts
+					}];
+				    _iScroll();
+				});
+				break;
+
+			default:
+				last_view = $location.$$url;
+				$scope.contacts = Contacts.query(function() {
+					utils.groupify($scope.contacts, $scope.groups);
+				    _iScroll();
+				});
+				break;
+		}
 	};
 
 
@@ -171,7 +204,8 @@ var app = angular.module('addressbook', ['mongolab']).
 	config(['$routeProvider', function($routeProvider, $locationProvider) {
 	  	$routeProvider.
 			when('/contacts/', {templateUrl: 'tpl/contacts-list.html', controller: AddressBook.ListCtrl}).
-			when('/contacts/starred', {templateUrl: 'tpl/contacts-list.html', controller: AddressBook.ListCtrl}).
+			when('/contacts/starred', {templateUrl: 'tpl/contacts-starred.html', controller: AddressBook.ListCtrl}).
+			when('/contacts/search', {templateUrl: 'tpl/contacts-search.html', controller: AddressBook.ListCtrl}).
 			when('/contact/add', {templateUrl: 'tpl/contact-edit.html', controller: AddressBook.DetailCtrl}).
 			when('/contact/view/:id', {templateUrl: 'tpl/contact-view.html', controller: AddressBook.DetailCtrl}).
 			when('/contact/edit/:id', {templateUrl: 'tpl/contact-edit.html', controller: AddressBook.DetailCtrl}).

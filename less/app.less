@@ -19,6 +19,8 @@
 @bottombar-height: 50px;
 
 @tabs-height: @topbar-height;
+@starred-caption-height: 40px;
+@profile-image-height: 180px;
 
 @titles-height: 30px;
 @list-padding: 20px;
@@ -43,11 +45,25 @@
 	border-radius: @radius;
 }
 
+.opacity(@v) {
+	-webkit-opacity: @v;
+	-moz-opacity: @v;
+	-o-opacity: @v;
+	opacity: @v;
+}
+
 .box-shadow(@x, @y, @h, @color) {
 	-webkit-box-shadow: @x @y @h @color;
 	-moz-box-shadow: @x @y @h @color;
 	-o-box-shadow: @x @y @h @color;
 	box-shadow: @x @y @h @color;
+}
+
+.border-box() {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box; 
 }
 
 .transition(@pr, @t) {
@@ -99,6 +115,14 @@ ul, ol,
 	float: right;
 }
 
+.overlay {
+	background: #000;
+	position: absolute;
+	top: 0; bottom: 0;
+	left: 0; right: 0;
+	.opacity(0.6);
+}
+
 /*****/
 
 body,
@@ -121,6 +145,11 @@ sub {
 a {
 	text-decoration: none;
 	color: @text-color;
+}
+
+#scroller {
+	width: 100%;
+	.border-box;
 }
 
 .row {
@@ -165,8 +194,14 @@ a {
 /*****/
 
 .lists {
-	padding: (@list-padding / 2) @list-padding (@list-padding / 2) @list-padding;
+	float: left;
 	width: @in-width;
+	padding: (@list-padding / 2) @list-padding (@list-padding / 2) @list-padding;
+}
+
+.lists.full {
+	width: @width;
+	padding: 0;
 }
 
 .list,
@@ -174,6 +209,7 @@ a {
 .list-item .item {
 	float: left;
 	width: 100%;
+	position: relative;
 }
 
 .list-item .item {
@@ -183,14 +219,49 @@ a {
 	border-top: 1px solid @list-bottomborder-color;
 }
 
-.list.single-fill .list-item {
-	/*height: @list-item-height;*/
-}
 
 .list.single-fill .list-item .item {
+	position: relative;
 	padding: 0;
 	height: @list-item-height;
 	line-height: @list-item-height;
+}
+
+.list.single-fill .list-item.half {
+	width: 50%;
+	overflow: hidden;
+}
+
+.list.single-fill .list-item.half .item {
+	overflow: hidden;
+	height: @profile-image-height;
+	border-top: none;
+}
+
+.list.single-fill .list-item.half .item.profile-image {
+	left: 0;
+	top: 0;
+}
+
+.list.single-fill .list-item.half .item.profile-image img {
+	margin-top: -15%;
+}
+
+.list.single-fill .caption {
+	height: @starred-caption-height;
+	width: 100%;
+}
+
+.caption .text{
+	position: absolute;
+	top: 0; bottom: 0;
+	left: 0; right: 0;
+	line-height: @starred-caption-height;
+	padding: 0 20px;
+	width: 100%;
+	color: #fff;
+	z-index: 2;
+	.border-box;
 }
 
 .list-item:first-child .item {
@@ -204,6 +275,8 @@ a {
 
 .list-item span.fright {
 	width: @list-item-height;
+	height: @list-item-height;
+	overflow: hidden;
 }
 
 .list-item span.fright img {
@@ -364,7 +437,7 @@ a {
 .profile-image {
 	position: relative;
 	overflow: hidden;
-	height: 180px;
+	height: @profile-image-height;
 	width: @width;
 	left: -@list-padding;
 	top: -(@list-padding / 2);
@@ -389,9 +462,7 @@ a {
 
 .form .title {
 	padding-left: 10px;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;  
+	.border-box; 
 }
 
 .form .list-item:last-child {
@@ -405,10 +476,7 @@ a {
 	border-top: none;
 	width: 100%;
 	padding: 10px;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;  
-
+	.border-box;
 }
 
 .form .list-item button {
@@ -485,16 +553,49 @@ form .form-item input.ng-invalid + .form-item-decorator {
 
 .form .form-item.field-right.img {
 	width: 20%;
-	padding: 10px 0;
+	padding: (@list-padding / 2) 0;
 }
 
 .form .form-item.field-right img {
 	float: right;
-	padding: 0 10px;
+	padding: 0 @list-padding;
+}
+
+.bar .icn.full.contact-name.form {
+	width: @width - @list-padding;
+	.border-box;
+}
+
+.contact-name.form .form-item {
+	height: @topbar-height - (@list-padding / 2);
+	padding-top: 0;
+}
+
+.contact-name.form .form-item .cancel {
+	position: absolute;
+	right: @list-padding / 2;
+	top: 0;
+}
+
+.contact-name.form .form-item input {
+	color: @icons-color;
+}
+
+.contact-name.form .form-item ::-webkit-input-placeholder {
+	color: @icons-color;
+}
+.contact-name.form .form-item :-moz-placeholder {
+	color: @icons-color;
+}
+.contact-name.form .form-item ::-moz-placeholder {
+	color: @icons-color;
+}
+.contact-name.form .form-item placeholder {
+	color: @icons-color;
 }
 
 
-
+/*********************/
 
 
 
@@ -503,7 +604,8 @@ form .form-item input.ng-invalid + .form-item-decorator {
 	.fixed.full,
 	.absolute.full,
 	.row,
-	.content {
+	.content,
+	.lists.full {
 		width: 100%;
 	}
 
@@ -536,13 +638,26 @@ form .form-item input.ng-invalid + .form-item-decorator {
 		left: -4%;
 		margin-top: -2%;
 	}
+
+	.list.single-fill .list-item.half .item.profile-image img {
+		margin-top: -5%;
+	}
+
+	.bar .icn.full.contact-name.form {
+		width: 96%;
+	}
+
+	.contact-name.form .form-item .cancel {
+		right: 2%;
+	}
 }
 
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
 	.fixed.full,
 	.absolute.full,
 	.row,
-	.content {
+	.content,
+	.lists.full {
 		width: 100%;
 	}
 
@@ -578,6 +693,10 @@ form .form-item input.ng-invalid + .form-item-decorator {
 
 	.form .form-item.field-right img {
 		padding: 0 2%;
+	}
+
+	.list.single-fill .list-item.half .item.profile-image img {
+		margin-top: -5%;
 	}
 }
 

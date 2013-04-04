@@ -7,7 +7,7 @@
         <a ng-href="#/contact/view/{{ contact._id.$oid }}"><span class="entypo-cancel"></span></a>
     </li>
     <li class="icon icn right" ng-show="!contact._id.$oid">
-        <a ng-href="#/contacts"><span class="entypo-cancel"></span></a>
+        <a href='javascript:void(0)' ng-click="Back()"><span class="entypo-cancel"></span></a>
     </li>
 </ul>
 
@@ -40,7 +40,7 @@
                         <span class="form-item-decorator"></span>
                     </div>
                     <div class="item form-item field-right img">
-                        <img width="60" height="60" ng-src="{{ ProfileImage(60) }}"/>
+                        <img width="60" ng-src="{{ ProfileImage(60) }}"/>
                     </div>
                 </li>
             </ul>
