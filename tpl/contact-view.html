@@ -23,66 +23,77 @@
     <div class="lists fleft" id="scroller">
 
         <div class="profile-image" ng-click="_showImage()" ng-class="{open: selected}">
-            <img ng-src="{{ ProfileImage(360) }}"/>
+            <img ng-src="{{ ProfileImage('480x480') }}"/>
         </div>
 
-        <div class="title fleft full">Phone</div>
-        <ul class="list">
-            <li class="list-item" ng:repeat="item in contact.phones">
-                <a class="item" href="tel:{{ item.value }}">
-                    <span class="value">{{ item.value }}</span>
-                    <span class="label">{{ item.type }}</span>
-                </a>
-            </li>
-        </ul>
+        <div ng-show="contact.phones.length">
+            <div class="title fleft full">Phone</div>
+            <ul class="list">
+                <li class="list-item" ng:repeat="item in contact.phones">
+                    <a class="item" href="tel:{{ item.value }}">
+                        <span class="value">{{ item.value }}</span>
+                        <span class="label">{{ item.type }}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-        <div class="title fleft full">Email</div>
-        <ul class="list">
-            <li class="list-item" ng:repeat="item in contact.emails">
-                <a class="item" target="_black" href="mailto:{{ item.value }}">
-                    <span class="value">{{ item.value }}</span>
-                    <span class="label">{{ item.type }}</span>
-                </a>
-            </li>
-        </ul>
+        <div ng-show="contact.emails.length">
+            <div class="title fleft full">Email</div>
+            <ul class="list">
+                <li class="list-item" ng:repeat="item in contact.emails">
+                    <a class="item" target="_black" href="mailto:{{ item.value }}">
+                        <span class="value">{{ item.value }}</span>
+                        <span class="label">{{ item.type }}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-        <div class="title fleft full">Address</div>
-        <ul class="list">
-            <li class="list-item" ng:repeat="item in contact.addresses">
-                <a class="item" target="_black" href="https://maps.google.com/maps?q={{ item.value }}">
-                    <span class="value">{{ item.value }}</span>
-                    <span class="label">{{ item.type }}</span>
-                </a>
-            </li>
-        </ul>
+        <div ng-show="contact.addresses.length">
+            <div class="title fleft full">Address</div>
+            <ul class="list">
+                <li class="list-item" ng:repeat="item in contact.addresses">
+                    <a class="item" target="_black" href="https://maps.google.com/maps?q={{ item.value }}">
+                        <span class="value">{{ item.value }}</span>
+                        <span class="label">{{ item.type }}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-        <div class="title fleft full">Birthday</div>
-        <ul class="list">
-            <li class="list-item">
-                <span class="item">
-                    <span class="value">{{ contact.birthday }}</span>
-                </span>
-            </li>
-        </ul>
+        <div ng-show="contact.birthday">
+            <div class="title fleft full">Birthday</div>
+            <ul class="list">
+                <li class="list-item">
+                    <span class="item">
+                        <span class="value">{{ contact.birthday }}</span>
+                    </span>
+                </li>
+            </ul>
+        </div>
 
-        <div class="title fleft full">Websites</div>
-        <ul class="list">
-            <li class="list-item" ng:repeat="item in contact.websites">
-                <a class="item" target="_black" href="{{ item.value }}">
-                    <span class="value">{{ item.value }}</span>
-                    <span class="label">{{ item.type }}</span>
-                </a>
-            </li>
-        </ul>
+        <div ng-show="contact.websites.length">
+            <div class="title fleft full">Websites</div>
+            <ul class="list">
+                <li class="list-item" ng:repeat="item in contact.websites">
+                    <a class="item" target="_black" href="{{ item.value }}">
+                        <span class="value">{{ item.value }}</span>
+                        <span class="label">{{ item.type }}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-        <div class="title fleft full">Notes</div>
-        <ul class="list">
-            <li class="list-item">
-                <span class="item">
-                    <span class="value">{{ contact.notes }}</span>
-                </span>
-            </li>
-        </ul>
-
+        <div ng-show="contact.notes">
+            <div class="title fleft full">Notes</div>
+            <ul class="list">
+                <li class="list-item">
+                    <span class="item">
+                        <span class="value">{{ contact.notes }}</span>
+                    </span>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
