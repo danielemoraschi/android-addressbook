@@ -1,0 +1,46 @@
+<ul class="fixed top full bar topbar tabs two">
+    <li class="icon">
+        <a href='#/contacts'><span class="entypo-user"></span></a>
+    </li>
+    <li class="icon active">
+        <a href='#/contacts/starred'><span class="entypo-star"></span></a>
+    </li>
+</ul>
+
+<div class="content" id="wrapper">
+	<div id="scroller" class="fleft">
+		<div class="lists full">
+			<ul class="list single-fill">
+			    <li class="list-item half" ng:repeat="contact in starred">
+			        <a class="item profile-image" href='#/contact/view/{{ contact._id.$oid }}'>
+			        	<img width="100%" ng-src="{{ ProfileImage('480x480', contact) }}"/>
+			        	<span class="absolute bottom caption">
+			        		<span class="text">{{ contact.firstName + ' ' + contact.lastName }}</span>
+			        		<span class="overlay"></span>
+			        	</span>
+			       	</a>
+			    </li>
+			</ul>
+		</div>
+		<div class="lists">
+			<div class="title fleft full">Frequently viewed</div>
+			<ul class="list single-fill">
+			    <li class="list-item" ng:repeat="contact in contacts">
+			        <a class="item" href='#/contact/view/{{ contact._id.$oid }}'>
+			        	<span class="fleft name">{{ contact.firstName + ' ' + contact.lastName }}</span>
+			        	<span class="fright image"><img width="60" ng-src="{{ ProfileImage('60x60', contact) }}"/></span>
+			       	</a>
+			    </li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<ul class="fixed bottom full bar bottombar">
+	<li class="icon icn left">
+        <a href='#/contacts/search'><span class="entypo-search"></span></a>
+    </li>
+    <li class="icon icn center">
+        <a href='#/contact/add'><span class="entypo-user-add"></span></a>
+    </li>
+</ul>

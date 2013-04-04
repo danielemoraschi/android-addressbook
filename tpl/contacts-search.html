@@ -1,0 +1,28 @@
+<ul class="fixed top full bar topbar">
+    <li class="icon icn left">
+        <a href='javascript:void(0)' ng-click="Back()"><span class="entypo-left-open-big"></span></a>
+    </li>
+    <li class="contact-name icn full form">
+    	<div class="form-item">
+            <input placeholder="Find contacts" type="text" id="searchterm" name="searchterm" ng-model="searchterm"/>
+            <span class="form-item-decorator"></span>
+            <span class="cancel entypo-cancel-circled" ng-show="searchterm" ng-click="searchterm=''"></span>
+        </div>
+    </li>
+</ul>
+
+<div class="content no-bottombar" id="wrapper">
+	<div class="lists" id="scroller">
+		<div ng:repeat="group in groups">
+			<div class="title fleft full">{{ group.label }}</div>
+			<ul class="list single-fill">
+			    <li class="list-item" ng:repeat="contact in group.contacts | filter:searchterm">
+			        <a class="item" href='#/contact/view/{{ contact._id.$oid }}'>
+			        	<span class="fleft name">{{ contact.firstName + ' ' + contact.lastName }}</span>
+			        	<span class="fright image"><img width="60" ng-src="{{ ProfileImage('60x60', contact) }}"/></span>
+			       	</a>
+			    </li>
+			</ul>
+		</div>
+	</div>
+</div>
