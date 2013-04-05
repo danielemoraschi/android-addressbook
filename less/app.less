@@ -5,11 +5,11 @@
 
 @main-color: #51B4E3;
 @light-color: #A6D6EA;
+@bkg-color: #eee;
+@bottombar-bkg: #555;
 
 @text-color: #000;
 @icons-color: #fff;
-@bkg-color: #eee;
-@bottombar-bkg: #555;
 
 @list-bottomborder-color: #ddd;
 @text-color: #000;
@@ -57,7 +57,6 @@
 	-o-box-sizing: border-box;
 	box-sizing: border-box; 
 }
-
 
 /*****/
 
@@ -121,11 +120,7 @@ body {
 	padding: 0;
 	font: @base-fontsize Helvetica, sans-serif;
 	color: @main-color;
-	background: url(//ssl.gstatic.com/s2/oz/images/stream/pinstripe.png) repeat;
-}
-
-sub {
-	bottom: -0.45em;
+	background: #000 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAJ0lEQVQIW2M0Njb+f+/ePQYYYBQUFPyvpKTEABMEC4BkYYJwAZggADGyDjN7QaaVAAAAAElFTkSuQmCC);
 }
 
 a {
@@ -648,7 +643,7 @@ form .form-item input.ng-invalid + .form-item-decorator {
 	}
 }
 
-@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+@media only screen and (max-device-width : 480px) {
 	.fixed.full,
 	.absolute.full,
 	.row,

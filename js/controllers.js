@@ -4,11 +4,11 @@ var AddressBook = (function() {
 
 	var 
 	iscroll,
-	last_view,
+	current_route,
 
 	_init = function($scope) {
 		iscroll = null;
-		last_view = '/contacts';
+		current_route = '/contacts';
 	},
 
 	_iScroll = function() {
@@ -49,7 +49,7 @@ var AddressBook = (function() {
 		}
 
 		$scope.Back = function() {
-			$location.path(last_view);
+			$location.path(current_route);
 		}
 
 		$scope.ProfileImage = function(dim) {
@@ -77,12 +77,12 @@ var AddressBook = (function() {
 
 	    $scope.DiscardField = function(type, index) {
 	        if($scope.contact[type] && $scope.contact[type][index]) {
-				$scope.contact[type].splice(index,1);
+				$scope.contact[type].splice(index, 1);
 	        }
 	    }
 
 		$scope.SaveContact = function () {
-	        if($scope.contact.firstName.trim()) {
+	        if($scope.contact.firstName && $scope.contact.firstName.trim()) {
 	        	var arrays = {'phones': [], 'emails': [], 'addresses': []};
 	        	angular.forEach(arrays, function(v, k) {
 					angular.forEach($scope.contact[k], function(val, key) {
@@ -93,21 +93,21 @@ var AddressBook = (function() {
 					$scope.contact[k] = arrays[k];
 				});
 
-	        	if($scope.contact._id.$oid) {
+	        	if($scope.contact._id) {
 	    			$scope.contact.update(function() {
 						$location.path('/contact/view/' + $scope.contact._id.$oid);
 					});
 	        	}
 	        	else {
 					Contacts.save($scope.contact, function(contact) {
-						$location.path('/contact/edit/' + contact._id.$oid);
+						$location.path('/contact/view/' + contact._id.$oid);
 					});
 				}
 	        }
 	    }
 
 	    $scope.DeleteContact = function () {
-	    	if($scope.contact._id.$oid) {
+	    	if($scope.contact._id) {
 	    		var c = confirm("Delete this contact?")
 				if (c==true) {
 					self.original.delete(function() {
@@ -149,12 +149,12 @@ var AddressBook = (function() {
 		}
 
 		$scope.Back = function() {
-			$location.path(last_view);
+			$location.path(current_route);
 		}
 
 		switch($location.$$url) {
 			case "/contacts/starred": 
-				last_view = $location.$$url;
+				current_route = $location.$$url;
 				$scope.starred = Contacts.query({q: '{"starred":true}'}, function() {
 					$scope.contacts = Contacts.query({q: '{"views":{"$gt":0}}', l: 10}, function() {
 					    _iScroll();
@@ -173,7 +173,7 @@ var AddressBook = (function() {
 				break;
 
 			default:
-				last_view = $location.$$url;
+				current_route = $location.$$url;
 				$scope.contacts = Contacts.query(function() {
 					Utils.groupify($scope.contacts, $scope.groups);
 				    _iScroll();
