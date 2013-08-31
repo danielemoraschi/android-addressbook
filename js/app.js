@@ -1,7 +1,10 @@
 'use strict';
 
 angular.module('android-addressbook', ['mongolab', 'helpers']).
-	config(['$routeProvider', function($routeProvider, $locationProvider) {
+	.config(function($compileProvider){
+    		$compileProvider.urlSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
+	})
+	.config(['$routeProvider', function($routeProvider, $locationProvider) {
 	  	$routeProvider.
 			when('/contacts/', {templateUrl: 'tpl/contacts-list.html', controller: AddressBook.ListCtrl}).
 			when('/contacts/starred', {templateUrl: 'tpl/contacts-starred.html', controller: AddressBook.ListCtrl}).
