@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('android-addressbook', ['mongolab', 'helpers']).
+angular.module('android-addressbook', ['mongolab', 'helpers'])
 	.config(function($compileProvider){
     		$compileProvider.urlSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
 	})
